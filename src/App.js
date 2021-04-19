@@ -1,23 +1,56 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import Form from './components/Form';
+import Weather from './components/Weather';
 
 function App() {
+  const [input, setInput] = useState('');
+  const [search, setSearch] = useState('');
+  const [weather, setWeather] = useState({});
+  const [isLoading, setIsloading] = useState(true);
+
+  const apiKey = 'e6b9b998b2255b5a9803b5dc3fa7e273';
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${apiKey}`;
+
+  useEffect(()=>{
+    if (isLoading) {
+      setIsloading(false);
+    } else {
+      getWeather();
+    }
+  }, [search])
+
+
+  const getWeather = async () => {
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log(data)
+      setWeather(data);
+    } catch (error) {
+    }
+  }
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setSearch(input);
+    setInput('');
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1>Weather App</h1>
+      <Form input={input} setInput={setInput} handleSearch={handleSearch}/>
+      {weather.main && (
+        <Weather
+          city={weather.name}
+          temp={weather.main.temp}
+          desc={weather.weather[0].description}
+          icon={weather.weather[0].icon}
+          background={weather.weather[0].main}
+        />
+      )}
     </div>
   );
 }
