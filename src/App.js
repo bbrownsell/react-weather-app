@@ -25,6 +25,9 @@ function App() {
     try {
       const response = await fetch(url);
       const data = await response.json();
+      if (data.cod === "404") { 
+        alert("City not found. Please try again")
+      }
       console.log(data)
       setWeather(data);
     } catch (error) {
@@ -34,6 +37,9 @@ function App() {
   const handleSearch = (e) => {
     e.preventDefault();
     setSearch(input);
+    if (input === '') {
+      alert("Please enter a City");
+    }
     setInput('');
   }
 
@@ -41,6 +47,7 @@ function App() {
   return (
     <div className="container">
       <h1>Weather App</h1>
+      <div className="content">
       <Form input={input} setInput={setInput} handleSearch={handleSearch}/>
       {weather.main && (
         <Weather
@@ -51,6 +58,7 @@ function App() {
           background={weather.weather[0].main}
         />
       )}
+      </div>
     </div>
   );
 }
