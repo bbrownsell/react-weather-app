@@ -139,6 +139,14 @@ button:hover {
   background-image: url('./images/snow.jpeg');
 }
 
+.Mist {
+  background-image: url('./images/mist.jpg');
+}
+
+.Fog {
+  background-image: url('./images/fog.jpg');
+}
+
 
 
 
